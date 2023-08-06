@@ -16,12 +16,14 @@ def run():
             match choice:
                 #opening csv file with notes saved
                 case 1:
-                    my_notes.open()
-
-                    if my_notes.length():
-                        view.print_msg(text_rus.load_success)
+                    if my_notes.open():
+                        if my_notes.length():
+                           view.print_msg(text_rus.load_success)
+                        else:
+                           view.print_msg(text_rus.empty_file(text_rus.file_name))
                     else:
-                        view.print_msg(text_rus.empty_file(text_rus.file_name))
+                        view.print_msg(text_rus.no_such_file)
+
 
                 #saving current set of notes to csv file 
                 case 2:

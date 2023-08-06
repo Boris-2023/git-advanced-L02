@@ -1,4 +1,5 @@
 from datetime import datetime
+import os
 
 
 class Notes:
@@ -11,13 +12,19 @@ class Notes:
 
     #open file with notes
     def open(self):
+
         self._notes = []# otherwise re-open of notes file will add new (same) lines to already opened data
-        with open(self._path, 'r', encoding='UTF-8') as file:
-            data = file.readlines()  # as data lines in file are sep by '\n'
-        for note in data:
-            note = note.strip().split(';')
-            new = {'id': note[0],'title': note[1], 'body': note[2], 'date': note[3]}
-            self._notes.append(new)
+        try:
+            with open(self._path, 'r', encoding='UTF-8') as file:
+                data = file.readlines()  # as data lines in file are sep by '\n'
+            for note in data:
+                note = note.strip().split(';')
+                new = {'id': note[0],'title': note[1], 'body': note[2], 'date': note[3]}
+                self._notes.append(new)
+        except FileNotFoundError:
+            return False
+        else:
+            return True
 
 
     #saves the notes

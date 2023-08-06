@@ -16,6 +16,8 @@ load_success = 'Файл заметок успешно открыт!'
 
 save_success = 'Заметки успешно сохранены в файл!'
 
+no_such_file = f'Файл "{file_name}" не найден!'
+
 notes_empty = 'Заметок нет или файл не загружен!'
 
 input_new_note = "Введите данные новой заметки: "
@@ -61,4 +63,4 @@ def delete_success(title: str):
 
 # пустой файл
 def empty_file(fname: str):
-    return f'Файл заметок "{fname}" пуст или не прочтен!'
+    return f'Файл заметок "{fname}" пуст!'
