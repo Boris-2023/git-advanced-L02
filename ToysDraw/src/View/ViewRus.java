@@ -10,7 +10,7 @@ import Model.Toy;
 public class ViewRus implements iGetView {
 
     private List<String> menu = new ArrayList<>();
-    String lineSep = "\n=============================================";
+    String lineSep = "\n===============================================";
 
     public ViewRus() {
         menu.add("Провести розыгрыш игрушки");

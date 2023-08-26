@@ -10,10 +10,10 @@ import View.ViewRus;
 
 public class App {
     public static void main(String[] args) throws Exception {
-        
+
         List<Toy> toysBase = new ArrayList<>();
 
-        //adding toys to the list
+        // adding toys to the list
         toysBase.add(new Toy(1, "Конструктор", 10, 25));
         toysBase.add(new Toy(2, "Кукла", 20, 15));
         toysBase.add(new Toy(3, "Самокат", 1, 5));

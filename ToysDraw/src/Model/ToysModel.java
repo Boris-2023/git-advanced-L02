@@ -147,7 +147,7 @@ public class ToysModel implements iGetModel {
      */
     public Toy findToyById(int id) {
         for (Toy toy : toys) {
-            if(id == toy.getId()){
+            if (id == toy.getId()) {
                 return toy;
             }
         }

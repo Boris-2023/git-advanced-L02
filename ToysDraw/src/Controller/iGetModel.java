@@ -13,9 +13,9 @@ public interface iGetModel {
 
     public void savePresentedToy(String toyName);
 
-     public List<Integer> getAllToysID();
+    public List<Integer> getAllToysID();
 
-     public List<Toy> getAllToys();
+    public List<Toy> getAllToys();
 
-     public Toy findToyById(int id);
+    public Toy findToyById(int id);
 }
