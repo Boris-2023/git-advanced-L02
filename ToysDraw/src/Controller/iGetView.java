@@ -31,10 +31,18 @@ public interface iGetView {
     public String msgOnAddingNewToy();
 
     public String msgOnAddingRoutine(int field);
+
     public String msgOnNotANumber();
+
     public String msgOnEmptyInput();
+
     public String msgOnNeedPositiveNumber();
+
     public String msgOnNeedNumberInRange(int min, int max);
+
     public String msgOnNewToyAdded(Toy toy);
+
     public String msgOnWeightChange(Toy toy, int msgType);
+
+    public String msgOnExit();
 }

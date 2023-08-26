@@ -277,4 +277,14 @@ public class ViewRus implements iGetView {
         }
     }
 
+    /**
+     * @apiNote method to return Russian message on exit out of the program
+     * 
+     * @see ViewRus#msgOnExit()
+     */
+    @Override
+    public String msgOnExit() {
+        return "\nВыход из приложения...";
+    }
+
 }

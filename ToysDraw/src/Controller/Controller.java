@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Queue;
 
 import Model.Toy;
-import View.ViewRus;
 
 public class Controller {
 
@@ -27,11 +26,12 @@ public class Controller {
             int chosen = getGoodCommand(view.printMenu());
 
             switch (chosen) {
+                // conducting a draw
                 case 1:
                     Toy prize = model.toysDraw();
 
                     if (prize != null) {
-                        System.out.println(view.msgToyWon(prize.getName()));
+                        System.out.println(view.msgToyWon(prize.getName()).toUpperCase());
                         if (prize.getQuantity() > 0) {
                             prize.setQuantity(prize.getQuantity() - 1);
                             toPresent.add(prize.getName());
@@ -42,60 +42,39 @@ public class Controller {
                         System.out.println(view.msgEmptyToyList());
                     }
                     break;
+                // adding new toy into the basic list
                 case 2:
                     System.out.println(view.msgOnAddingNewToy().toUpperCase());
 
                     Toy newToy = addNewToy();
 
-                    if (newToy.getId() != 0) {
+                    if (newToy != null) {
                         model.addToy(newToy);
                         System.out.println(view.msgOnNewToyAdded(newToy));
                     }
 
                     break;
+                // modifying toy's weight by its ID
                 case 3:
-                    System.out.println(view.msgOnListToDraw() + model);
+                    System.out.println(view.msgOnListToDraw().toUpperCase() + model);
 
-                    boolean newTry = true;
                     Toy toyToChange = new Toy();
 
                     // getting input ID from user and corresponding toy from basic list
-                    while (newTry) {
-                        String str = view.prompt(view.msgOnWeightChange(toyToChange, 0));
-                        if (isInteger(str)) {
-                            int id = Integer.parseInt(str);
-                            toyToChange = model.findToyById(id);
-                            if (toyToChange != null) {
-                                newTry = false;
-                            } else {
-                                System.out.println(view.msgOnWeightChange(toyToChange, 1));
-                                break;
-                            }
-                        } else {
-                            System.out.println(view.msgOnNotANumber());
-                        }
-                    }
-                    if (toyToChange.getId() == 0)
+                    int id = promptIntegerInRange(view.msgOnWeightChange(toyToChange, 0), 0, Integer.MAX_VALUE);
+                    toyToChange = model.findToyById(id);
+                    if (toyToChange == null) {
+                        System.out.println(view.msgOnWeightChange(toyToChange, 1));
                         break;
-
-                    // getting input new value from user and adjust corresponding toy in basic list
-                    newTry = true;
-                    while (newTry) {
-                        String str = view.prompt(view.msgOnWeightChange(toyToChange, 2));
-                        if (isInteger(str)) {
-                            int wgt = Integer.parseInt(str);
-                            if (wgt > 1 && wgt < 100) {
-                                toyToChange.setWeight(wgt);
-                                System.out.println(view.msgOnWeightChange(toyToChange, 3).toUpperCase());
-                                newTry = false;
-                            } else {
-                                System.out.println(view.msgOnNeedNumberInRange(1, 100));
-                            }
-                        } else {
-                            System.out.println(view.msgOnNotANumber());
-                        }
                     }
+
+                    // getting weight new value from user and adjust corresponding toy in basic list
+                    int wgt = promptIntegerInRange(view.msgOnWeightChange(toyToChange, 2), 0, 100);
+                    toyToChange.setWeight(wgt);
+                    System.out.println(view.msgOnWeightChange(toyToChange, 3).toUpperCase());
+
                     break;
+                // gift a toy won
                 case 4:
                     String toyPresentName = toPresent.poll();
                     if (toyPresentName != null) {
@@ -105,9 +84,11 @@ public class Controller {
                         System.out.println(view.msgEmptyToyList().toUpperCase());
                     }
                     break;
+                // displaying basic list of toys (intended for a draw)
                 case 5:
                     System.out.println(view.msgOnListToDraw().toUpperCase() + model);
                     break;
+                // displaying a list of won toys (to gift out)
                 case 6:
                     if (toPresent.size() != 0) {
                         System.out.println(view.msgOnListToPresent().toUpperCase() + toPresent);
@@ -115,6 +96,7 @@ public class Controller {
                         System.out.println(view.msgEmptyToyList().toUpperCase());
                     }
                     break;
+                // dislaying a list of toys alrady gifted (from file)
                 case 7:
 
                     List<String> toysGifted = model.getToysPresented();
@@ -125,7 +107,9 @@ public class Controller {
                         System.out.println(view.msgOnEmptyGiftedList().toUpperCase());
                     }
                     break;
+                // exit
                 case 8:
+                    System.out.println(view.msgOnExit().toUpperCase());
                     getNewIteration = false;
                     break;
                 default:
@@ -187,35 +171,20 @@ public class Controller {
         Toy newToy = new Toy();
 
         // Id of the new toy
-        boolean newTry = true;
-        while (newTry) {
-            String str = view.prompt(view.msgOnAddingRoutine(0));
-            if (isInteger(str)) {
-                int id = Integer.parseInt(str);
-                if (id < 1) {
-                    System.out.println(view.msgOnNeedPositiveNumber());
-                } else {
-                    List<Integer> ids = model.getAllToysID();
-                    if (ids.indexOf(id) == -1) {
-                        newToy.setId(id);
-                        newTry = false;
-                    } else {
-                        System.out.println(view.msgOnAddingRoutine(4).toUpperCase());
-                        break;
-                    }
-                }
-            } else {
-                System.out.println(view.msgOnNotANumber());
-            }
+        int id = promptIntegerInRange(view.msgOnAddingRoutine(0), 0, Integer.MAX_VALUE);
+        List<Integer> ids = model.getAllToysID();
+        if (ids.indexOf(id) == -1) {
+            newToy.setId(id);
+        } else {
+            System.out.println(view.msgOnAddingRoutine(4).toUpperCase());
+            return null;
         }
-        if (newToy.getId() == 0)
-            return newToy;
 
         // Name of the toy
-        newTry = true;
+        boolean newTry = true;
         while (newTry) {
             String str = view.prompt(view.msgOnAddingRoutine(1));
-            if (str != "") {
+            if (!str.isEmpty()) {
                 newToy.setName(str);
                 newTry = false;
             } else {
@@ -224,38 +193,10 @@ public class Controller {
         }
 
         // Quantity of the new toy
-        newTry = true;
-        while (newTry) {
-            String str = view.prompt(view.msgOnAddingRoutine(2));
-            if (isInteger(str)) {
-                int input = Integer.parseInt(str);
-                if (input < 1) {
-                    System.out.println(view.msgOnNeedPositiveNumber());
-                } else {
-                    newToy.setQuantity(input);
-                    newTry = false;
-                }
-            } else {
-                System.out.println(view.msgOnNotANumber());
-            }
-        }
+        newToy.setQuantity(promptIntegerInRange(view.msgOnAddingRoutine(2), 1, Integer.MAX_VALUE));
 
         // Weight of the new toy
-        newTry = true;
-        while (newTry) {
-            String str = view.prompt(view.msgOnAddingRoutine(3));
-            if (isInteger(str)) {
-                int input = Integer.parseInt(str);
-                if (input < 1 || input > 100) {
-                    System.out.println(view.msgOnNeedNumberInRange(1, 100));
-                } else {
-                    newToy.setWeight(input);
-                    newTry = false;
-                }
-            } else {
-                System.out.println(view.msgOnNotANumber());
-            }
-        }
+        newToy.setWeight(promptIntegerInRange(view.msgOnAddingRoutine(3), 1, 100));
 
         return newToy;
     }
