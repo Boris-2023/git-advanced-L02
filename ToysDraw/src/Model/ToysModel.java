@@ -1,19 +1,14 @@
 package Model;
 
 import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
 import Controller.iGetModel;
-import View.ViewRus;
 
 public class ToysModel implements iGetModel {
     private List<Toy> toys;
@@ -100,13 +95,12 @@ public class ToysModel implements iGetModel {
             }
             reader.close();
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            return null;
         }
 
         return presents;
     }
 
-    
     /**
      * @apiNote saving presented toy to the file
      * 
@@ -122,6 +116,42 @@ public class ToysModel implements iGetModel {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    /**
+     * @apiNote method to collect all IDs in the list
+     * @return ID numbers of all toys in basic list for Draws
+     * @see ToysModel#getAllToysID()
+     */
+    public List<Integer> getAllToysID() {
+        List<Integer> res = new ArrayList<>();
+        for (Toy toy : toys) {
+            res.add(toy.getId());
+        }
+        return res;
+    }
+
+    /**
+     * @apiNote method to get all toys from the list
+     * @return all toys from basic list for Draws
+     * @see ToysModel#getAllToys()
+     */
+    public List<Toy> getAllToys() {
+        return toys;
+    }
+
+    /**
+     * @apiNote method to find toy in the list by its ID
+     * @return toy found or null if such ID does not exists
+     * @see ToysModel#findToyById(int)
+     */
+    public Toy findToyById(int id) {
+        for (Toy toy : toys) {
+            if(id == toy.getId()){
+                return toy;
+            }
+        }
+        return null;
     }
 
 }

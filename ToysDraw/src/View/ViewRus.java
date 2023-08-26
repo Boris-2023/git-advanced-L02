@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import Controller.iGetView;
+import Model.Toy;
 
 public class ViewRus implements iGetView {
 
@@ -14,7 +15,7 @@ public class ViewRus implements iGetView {
     public ViewRus() {
         menu.add("Провести розыгрыш игрушки");
         menu.add("Добавить новую игрушку в список для розыгрыша");
-        menu.add("Измененить вес (частоту выпадения) игрушки");
+        menu.add("Изменить вес (частоту выпадения) игрушки");
         menu.add("Выдать игрушку (по очереди)");
         menu.add("Показать список игрушек для розыгрыша");
         menu.add("Показать очередь игрушек на выдачу");
@@ -30,7 +31,7 @@ public class ViewRus implements iGetView {
      */
     @Override
     public int printMenu() {
-        String res = "\nГЛАВНОЕ МЕНЮ:" + lineSep;
+        String res = "\nГЛАВНОЕ МЕНЮ:";
         int cnt = 0;
         if (menu != null) {
             for (String item : menu) {
@@ -47,7 +48,7 @@ public class ViewRus implements iGetView {
     }
 
     /**
-     * method to prompt from user by invitation
+     * method to prompt Integer (in range) from user by invitation
      * 
      * @param msg - message to print, invite user
      * @see ViewRus#prompt(String)
@@ -89,7 +90,6 @@ public class ViewRus implements iGetView {
         return "\nСписок игрушек пуст!";
     }
 
-    
     /**
      * @apiNote method to return Russian message on the toy won
      * @param toyName - name of the toy
@@ -97,7 +97,7 @@ public class ViewRus implements iGetView {
      */
     @Override
     public String msgToyWon(String toyName) {
-        return "\nВыиграна игрушка: " + toyName + "!";
+        return "\nВыиграна игрушка '" + toyName + "'!";
     }
 
     /**
@@ -130,7 +130,7 @@ public class ViewRus implements iGetView {
         return "\nОчередь выигранных игрушек на выдачу:\n";
     }
 
-     /**
+    /**
      * @apiNote method to return Russian message on presenting the toy won
      * @param toyName - name of the toy
      * @see ViewRus#msgOnPresentedToy(String)
@@ -140,9 +140,18 @@ public class ViewRus implements iGetView {
         return "\nИгрушка '" + toyName + "' выдана и сохранена в файл!";
     }
 
-    
     /**
-     * @apiNote method to return Russian message on toys already presented (loaded from .txt file)
+     * @apiNote method to return Russian message on Empty gifted toys
+     * @see ViewRus#msgOnEmptyGiftedList()
+     */
+    @Override
+    public String msgOnEmptyGiftedList() {
+        return "\nСписок выданных игрушек пуст!";
+    }
+
+    /**
+     * @apiNote method to return Russian message on toys already presented (loaded
+     *          from .txt file)
      * 
      * @see ViewRus#msgOnLoadedToys()
      */
@@ -150,5 +159,122 @@ public class ViewRus implements iGetView {
     public String msgOnLoadedToys() {
         return "\nСписок названий выданных игрушек (из файла):";
     }
-    
+
+    /**
+     * @apiNote method to return Russian message on adding new toy to the list for
+     *          draws
+     * 
+     * @see ViewRus#msgOnAddingNewToy()
+     */
+    @Override
+    public String msgOnAddingNewToy() {
+        return "\nДобавление новой игрушки для участия в розыгрыше:";
+    }
+
+    /**
+     * @apiNote method to return Russian messages for adding new toy to the list for
+     *          draws (request for ID, Name, Qty & probability wheight)
+     * 
+     * @see ViewRus#msgOnAddingRoutine(int)
+     */
+    @Override
+    public String msgOnAddingRoutine(int field) {
+        String res = "";
+        switch (field) {
+            case 0:
+                res = "Укажите номер ID новой игрушки: ";
+                break;
+            case 1:
+                res = "Укажите название новой игрушки: ";
+                break;
+            case 2:
+                res = "Укажите количество новой игрушки: ";
+                break;
+            case 3:
+                res = "Укажите вес (частоту выпадения в розыгрыше) новой игрушки: ";
+                break;
+            case 4:
+                res = "\nТакой ID уже есть в списке!";
+                break;
+            default:
+                res = "\nНЕИЗВЕСТНОЕ ПОЛЕ при добавлении новой игрушки!";
+                return null;
+
+        }
+        return res;
+    }
+
+    /**
+     * @apiNote method to return Russian message on the input that is not a number
+     * 
+     * @see ViewRus#msgOnNotANumber()
+     */
+    @Override
+    public String msgOnNotANumber() {
+        return "\nВведенное значение не является числом!";
+    }
+
+    /**
+     * @apiNote method to return Russian message on the empty input
+     * 
+     * @see ViewRus#msgOnEmptyInput()
+     */
+    @Override
+    public String msgOnEmptyInput() {
+        return "\nЗначение не введено!";
+    }
+
+    /**
+     * @apiNote method to return Russian message on the need positive number only
+     * 
+     * @see ViewRus#msgOnNeedPositiveNumber()
+     */
+    @Override
+    public String msgOnNeedPositiveNumber() {
+        return "\nВведенное значение должно быть больше нуля!";
+    }
+
+    /**
+     * @apiNote method to return Russian message on the need a number whithin the
+     *          range of input
+     * 
+     * @see ViewRus#msgOnNeedNumberInRange(int, int)
+     */
+    @Override
+    public String msgOnNeedNumberInRange(int min, int max) {
+        return "\nВведенное значение должно быть в диапазоне от " + min + " до " + max + "!";
+    }
+
+    /**
+     * @apiNote method to return Russian message on new toy added successfully
+     * 
+     * @see ViewRus#msgOnNeedPositiveNumber()
+     */
+    @Override
+    public String msgOnNewToyAdded(Toy toy) {
+        return "\nДобавлена новая игрушка: " + toy;
+    }
+
+    /**
+     * @apiNote method to return Russian messages on wight change
+     * @param type - specifies the message: to choose the ID, to input new value, or
+     *             successfully changed
+     * @see ViewRus#msgOnWeightChange()
+     */
+    @Override
+    public String msgOnWeightChange(Toy toy, int msgType) {
+        switch (msgType) {
+            case 0:
+                return "\nУкажите ID игрушки для изменения веса (частоты выпадения): ";
+            case 1:
+                return "\nИгрушки с указанным ID в списке нет!";
+            case 2:
+                return "\nВведите новое значение веса для игрушки '" + toy.getName() + "': ";
+            case 3:
+                return "\nЗначение веса для игрушки '" + toy.getName() + "' успешно изменено!";
+            default:
+                return "";
+        }
+    }
+
 }
